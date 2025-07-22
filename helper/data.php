@@ -3,8 +3,8 @@
 session_start();
 include '../setting.php';
 include '../helper.php';
-if(!empty($_SESSION['codekop_session'])) {
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+if(!empty($_SESSION['supeno_session'])) {
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT * FROM users WHERE id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));
@@ -28,18 +28,21 @@ if(!empty(getGet('aksi') == 'barang')) {
 }
 
 if(!empty(getGet('aksi') == 'nota-jual')) {
-    $query = "SELECT users.name, pelanggan.nama_pelanggan, penjualan.* 
-                FROM penjualan 
-                LEFT JOIN users 
-                ON penjualan.id_member = users.id 
-                LEFT JOIN pelanggan 
-                ON penjualan.id_pelanggan=pelanggan.id";
+    $query = "SELECT users.name, pelanggan.nama_pelanggan, (penjualan.bayar - penjualan.total) AS kurang, 
+            (penjualan.bayar - penjualan.total) AS kembalian,
+            penjualan.* 
+            FROM penjualan 
+            LEFT JOIN users 
+            ON penjualan.id_member = users.id 
+            LEFT JOIN pelanggan 
+            ON penjualan.id_pelanggan=pelanggan.id";
     $search = array('no_trx','name','nama_pelanggan','status_bayar');
     if(!empty(getGet('id_pelanggan', true))) {
         $where  = array('id_pelanggan' => getGet('id_pelanggan'));
     } else {
         $where  = null;
     }
+
     if(!empty(getGet('thn', true))) {
         $periode = getGet('thn', true).'-'.getGet('bln', true);
         $isWhere = " penjualan.periode = '".$periode."' ";
@@ -50,15 +53,18 @@ if(!empty(getGet('aksi') == 'nota-jual')) {
     } else {
         $isWhere = " penjualan.periode = '".date('Y-m')."' ";
     }
-    if($_SESSION['codekop_session']['akses']== 5) {
-        $isWhere .= " AND penjualan.id_member = ".$_SESSION['codekop_session']['id'];
+    if($_SESSION['supeno_session']['akses']== 5) {
+        $isWhere .= " AND penjualan.id_member = ".$_SESSION['supeno_session']['id'];
     }
 
+    if(!empty(getGet('status_bayar', true))) {
+        $isWhere  .= " AND status_bayar = '".getGet('status_bayar')."'";
+    }
 
     echo get_tables_query($connectdb, $query, $search, $where, $isWhere);
 }
 
-if(!empty(getGet('aksi') == 'nota-jual-produk')) {
+if(getGet('aksi') === 'nota-jual-produk') {
     $query = "SELECT barang_kategori.nama_kategori, 
         barang.id_kategori, 
         penjualan_detail.*,
@@ -66,35 +72,48 @@ if(!empty(getGet('aksi') == 'nota-jual-produk')) {
         pelanggan.nama_pelanggan,
         users.name AS nama_user 
         FROM penjualan_detail 
-        LEFT JOIN barang ON penjualan_detail.id_barang=barang.id 
-        LEFT JOIN barang_kategori ON barang.id_kategori=barang_kategori.id 
+        LEFT JOIN barang ON penjualan_detail.id_barang = barang.id 
+        LEFT JOIN barang_kategori ON barang.id_kategori = barang_kategori.id 
         LEFT JOIN penjualan ON penjualan.no_trx = penjualan_detail.no_trx
         LEFT JOIN pelanggan ON penjualan.id_pelanggan = pelanggan.id
         LEFT JOIN users ON penjualan_detail.id_member = users.id ";
-    $search = array('penjualan_detail.no_trx','penjualan_detail.nama_barang');
 
-    if(!empty(getGet('kategori', true))) {
-        if(getGet('kategori', true) !== 'All') {
-            $where  = array('barang.id_kategori' => getGet('kategori', true));
-        } else {
-            $where  = null;
-        }
-    } else {
-        $where  = null;
+    $search = array('penjualan_detail.no_trx', 'penjualan_detail.nama_barang');
+
+    $where = null;
+
+    // Filter kategori jika ada dan bukan 'All'
+    if(!empty(getGet('kategori', true)) && getGet('kategori', true) !== 'All') {
+        $where = array('barang.id_kategori' => getGet('kategori', true));
     }
 
-    if(!empty(getGet('thn', true))) {
-        $periode = getGet('thn', true).'-'.getGet('bln', true);
-        $isWhere = " penjualan_detail.periode = '".$periode."' ";
+    // Filter periode dan tanggal input, sama seperti nota-jual
+    if(!empty(getGet('thn', true)) && !empty(getGet('bln', true))) {
+        $periode = getGet('thn', true) . '-' . getGet('bln', true);
+        $isWhere = " penjualan_detail.periode = '" . $periode . "' ";
     } elseif(!empty(getGet('hari', true))) {
-        $tgla = getGet('tgla');
-        $tglb = getGet('tglb');
+        $tgla = getGet('tgla', true);
+        $tglb = getGet('tglb', true);
         $isWhere = " penjualan_detail.tgl_input BETWEEN '$tgla' AND '$tglb' ";
     } else {
-        $isWhere = " penjualan_detail.periode = '".date('Y-m')."' ";
+        $isWhere = " penjualan_detail.periode = '" . date('Y-m') . "' ";
     }
+
+    // Filter akses user sama seperti nota-jual
+    if($_SESSION['supeno_session']['akses'] == 5) {
+        $isWhere .= " AND penjualan_detail.id_member = " . $_SESSION['supeno_session']['id'];
+    }
+
+    // Filter status bayar di tabel penjualan
+    if(!empty(getGet('status_bayar', true))) {
+        // Karena status_bayar ada di tabel penjualan, kita perlu join dan filter juga
+        // Pastikan join penjualan sudah ada di query (sudah ada di atas)
+        $isWhere .= " AND penjualan.status_bayar = '" . getGet('status_bayar', true) . "'";
+    }
+
     echo get_tables_query($connectdb, $query, $search, $where, $isWhere);
 }
+
 
 if(!empty(getGet('aksi') == 'nota-beli')) {
     $query = "SELECT users.name, pembelian.* 

@@ -2,8 +2,8 @@
     session_start();
     include '../../setting.php';
     include '../../helper.php';
-    if(!empty($_SESSION['codekop_session'])) {
-        $uid =  (int)$_SESSION['codekop_session']['id'];
+    if(!empty($_SESSION['supeno_session'])) {
+        $uid =  (int)$_SESSION['supeno_session']['id'];
         $sql_users = "SELECT * FROM users WHERE id = ?";
         $row_users = $connectdb->prepare($sql_users);
         $row_users->execute(array($uid));
@@ -126,8 +126,7 @@
     </style>
 </head>
 
-<body class="hold-transition sidebar-collapse" style="-webkit-print-color-adjust: exact !important;"
-    onload="window.print()">
+<body class="hold-transition sidebar-collapse" <?php if(!empty(getGet('excel', true))) { echo 'style="border: 0.1pt solid #ccc"'; } else {?> style="-webkit-print-color-adjust: exact !important;" onload="window.print()" <?php }?>>
     <div class="wrapper">
         <section class="content">
             <div class="container">

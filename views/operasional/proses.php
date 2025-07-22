@@ -7,7 +7,7 @@
         $data[] =  htmlspecialchars($_POST["ket_operasional"]);
         $data[] =  htmlspecialchars($_POST["tgl_input"]);
         $data[] =  date('Y-m-d H:i:s');
-        $data[] =  $_SESSION['codekop_session']['id'];
+        $data[] =  $_SESSION['supeno_session']['id'];
 
         $sql = "INSERT INTO operasional (nama_operasional,status_operasional,harga_operasional,ket_operasional,tgl_input,created_at,id_users ) VALUES (?,?,?,?,?,?,?)";
         $row = $connectdb->prepare($sql);

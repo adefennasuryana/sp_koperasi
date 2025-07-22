@@ -1,5 +1,5 @@
 <?php 
-    if (!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))) {
+    if (!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))) {
     } else {
         redirect($baseURL);
     }
@@ -26,7 +26,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Satuan</th>
-                                <?php if (!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))) {?>
+                                <?php if (!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))) {?>
                                 <th>Aksi</th>
                                 <?php }?>
                             </tr>
@@ -44,13 +44,13 @@
                                 <td><?= $no; ?></td>
 
                                 <td><?=$r->satuan; ?></td>
-                                <?php if (!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))) {?>
+                                <?php if (!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))) {?>
                                 <td>
                                     <a href="<?= "edit.php?id=".$r->id;?>" class="btn btn-success btn-sm" title="Edit">
                                         <i class="fa fa-edit"></i>
                                     </a>
 
-                                    <?php if (!empty(in_array($_SESSION['codekop_session']['akses'], [1]))) {?>
+                                    <?php if (!empty(in_array($_SESSION['supeno_session']['akses'], [1]))) {?>
                                     <?php if ($r->id > 1) {?>
                                     <a href="<?= "proses.php?aksi=delete&id=".$r->id;?>" class="btn btn-danger btn-sm"
                                         onclick="javascript:return confirm(`Data ingin dihapus ?`);" title="Delete">

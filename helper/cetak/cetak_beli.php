@@ -2,8 +2,8 @@
 session_start();
 include '../../setting.php';
 include '../../helper.php';
-if(!empty($_SESSION['codekop_session'])) {
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+if(!empty($_SESSION['supeno_session'])) {
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT * FROM users WHERE id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));
@@ -38,7 +38,7 @@ $toko = $row_toko->fetch(PDO::FETCH_OBJ);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Software pembelian">
-    <meta name="author" content="Codekop">
+    <meta name="author" content="supeno">
 
     <title>Cetak Nota</title>
     <link rel="stylesheet"

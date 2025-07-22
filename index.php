@@ -3,15 +3,15 @@
 @session_start();
 /*
   |--------------------------------------------------------------------------
-  | POS Codekop
+  | POS Supeno
   |--------------------------------------------------------------------------
   |
-  | @package   : pos codekop
+  | @package   : pos supeno
   | @version   : v.1.0
-  | @author    : fauzan1892
-  | @copyright : Copyright (c) 2021 Codekop.com (https://www.codekop.com)
+  | @author    : supeno
+  | @copyright : Copyright (c) 2025
   |
-  | free for everyone to development, a pos codekop premium project
+  | free for everyone to development, a pos supeno premium project
   | recommended php version for running is 7.3+
   |
  */
@@ -20,11 +20,11 @@ require 'setting.php';
 require 'helper.php';
 require 'vendor/autoload.php';
 
-if (!empty($_SESSION['codekop_session'])) {
+if (!empty($_SESSION['supeno_session'])) {
     global $uid;
     global $users;
     global $toko;
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT hak_akses.hak_akses, users.* FROM users LEFT JOIN hak_akses ON users.akses=hak_akses.id WHERE users.id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));

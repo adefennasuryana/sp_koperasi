@@ -1,4 +1,4 @@
-<?php if(!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))){ }else{redirect($baseURL); }?>
+<?php if(!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))){ }else{redirect($baseURL); }?>
 <?php 
     $bulan_tes =array(
         '01'=>"Januari",

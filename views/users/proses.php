@@ -1,6 +1,6 @@
 <?php
 if (!empty(getGet("aksi") == "tambah")) {
-    if (!empty($_SESSION['codekop_session']['akses'] != 1)) {
+    if (!empty($_SESSION['supeno_session']['akses'] != 1)) {
         redirect($baseURL);
     }
     $pass = password_hash(htmlspecialchars(getPost("pass")), PASSWORD_DEFAULT);
@@ -123,7 +123,7 @@ if (!empty(getGet("aksi") == "update")) {
                 if (isset($_GET['profil'])) {
                     $sql = "UPDATE users SET name = ?, user = ?, pass = ?, created_at = ?, avatar =?, email =?, telepon =?, alamat =?   WHERE id = ? ";
                 } else {
-                    if (!empty($_SESSION['codekop_session']['akses'] != 1)) {
+                    if (!empty($_SESSION['supeno_session']['akses'] != 1)) {
                         redirect($baseURL);
                     }
                     $sql = "UPDATE users SET name = ?, user = ?, pass = ?, akses = ?, active = ?, created_at = ?, avatar =?, email =?, telepon =?, alamat =?   WHERE id = ? ";
@@ -161,7 +161,7 @@ if (!empty(getGet("aksi") == "update")) {
         if (isset($_GET['profil'])) {
             $sql = "UPDATE users SET name = ?, user = ?, pass = ?,  created_at = ?, email =?, telepon =?, alamat =?  WHERE id = ? ";
         } else {
-            if (!empty($_SESSION['codekop_session']['akses'] != 1)) {
+            if (!empty($_SESSION['supeno_session']['akses'] != 1)) {
                 redirect($baseURL);
             }
             $sql = "UPDATE users SET name = ?, user = ?, pass = ?, akses = ?, active = ?, created_at = ?, email =?, telepon =?, alamat =?  WHERE id = ? ";
@@ -179,7 +179,7 @@ if (!empty(getGet("aksi") == "update")) {
 }
 
 if (!empty(getGet("aksi") == "delete")) {
-    if (!empty($_SESSION['codekop_session']['akses'] != 1)) {
+    if (!empty($_SESSION['supeno_session']['akses'] != 1)) {
         redirect($baseURL);
     }
     $id = (int) getGet("id"); // should be integer (id)

@@ -2,8 +2,8 @@
 session_start();
 include '../../setting.php';
 include '../../helper.php';
-if(!empty($_SESSION['codekop_session'])) {
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+if(!empty($_SESSION['supeno_session'])) {
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT * FROM users WHERE id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));
@@ -44,7 +44,7 @@ if(!empty($_SESSION['codekop_session'])) {
                     if($r->stok < $r->jumlah) {
                         $sqlw = "UPDATE keranjang SET jumlah= ? WHERE id_barang = ? AND id_member = ?";
                         $roww = $connectdb->prepare($sqlw);
-                        $roww->execute(array($r->stok, $r->id_barang, $_SESSION["codekop_session"]["id"]));
+                        $roww->execute(array($r->stok, $r->id_barang, $_SESSION["supeno_session"]["id"]));
                         echo "<script>
                                 Swal.fire({
                                     title: 'Failed !',

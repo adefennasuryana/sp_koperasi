@@ -1,5 +1,5 @@
 <?php 
-    if (!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))) {
+    if (!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))) {
     } else {
         redirect($baseURL);
     }

@@ -3,8 +3,8 @@
 session_start();
 include '../../setting.php';
 include '../../helper.php';
-if(!empty($_SESSION['codekop_session'])) {
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+if(!empty($_SESSION['supeno_session'])) {
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT * FROM users WHERE id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));
@@ -58,7 +58,7 @@ if (!empty(getGet("aksi") == "tambah")) {
     $rowNota->execute([$notrx]);
     $hasilNota = $rowNota->rowCount();
     if ($hasilNota > 0) {
-        $notrx = $notrx.'-'.date('Hi').'-'.$_SESSION['codekop_session']['id'];
+        $notrx = $notrx.'-'.date('Hi').'-'.$_SESSION['supeno_session']['id'];
     }
 
     $sql = "SELECT barang.id_barang as idb, keranjang_beli.* 
@@ -92,7 +92,7 @@ if (!empty(getGet("aksi") == "tambah")) {
         $datapd[] = $r->beli * $r->jumlah;
         $datapd[] = date('Y-m-d');
         $datapd[] = date('Y-m');
-        $datapd[] = $_SESSION['codekop_session']['id'];
+        $datapd[] = $_SESSION['supeno_session']['id'];
         $datapd[] = date('Y-m-d H:i:s');
         $sqlpd = "INSERT INTO pembelian_detail(no_trx, id_barang, idb, nama_barang, 
                     beli, qty, total,
@@ -112,7 +112,7 @@ if (!empty(getGet("aksi") == "tambah")) {
 
     $datap[] = $_POST["supplier"];
     $datap[] = $notrx;
-    $datap[] = $_SESSION['codekop_session']['id'];
+    $datap[] = $_SESSION['supeno_session']['id'];
     $datap[] = $qty;
     $datap[] = $beli;
     $datap[] = date('Y-m-d');
@@ -129,7 +129,7 @@ if (!empty(getGet("aksi") == "tambah")) {
 
     $sql_delete = "DELETE FROM keranjang_beli WHERE id_member = ?";
     $row_delete = $connectdb->prepare($sql_delete);
-    $row_delete->execute(array($_SESSION['codekop_session']['id']));
+    $row_delete->execute(array($_SESSION['supeno_session']['id']));
 
     echo json_encode(['cek' => 'success', 'msg' => "Transaksi Anda Telah Berhasil  !", 'id' => $notrx]);
 }

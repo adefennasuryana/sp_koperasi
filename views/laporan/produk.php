@@ -1,4 +1,8 @@
-<?php if(!empty($_SESSION['codekop_session']['akses'] != 1)){ redirect($baseURL); }?>
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+<?php if(!empty($_SESSION['supeno_session']['akses'] != 1)){ redirect($baseURL); }?>
 <?php 
     $bulan_tes =array(
         '01'=>"Januari",
@@ -245,27 +249,28 @@
                             $sqkat = "";
                         }
                     }
+
                     if(!empty(getGet('cari', true))){
                         $periode = getPost('thn', true).'-'.getPost('bln', true);
-                        $sql = "SELECT SUM(qty) as qty, SUM(beli * qty) as beli, SUM(total) as jual, barang.id_kategori 
+                        $sql = "SELECT SUM(qty) as qty, SUM(beli * qty) as beli, SUM(total) as jual 
                                 FROM penjualan_detail 
                                 LEFT JOIN barang ON penjualan_detail.id_barang=barang.id 
                                 WHERE penjualan_detail.periode = ? $sqkat";
                         $row = $connectdb->prepare($sql);
                         $row->execute(array($periode));
                         $hasil = $row->fetch(PDO::FETCH_OBJ);
-                    }elseif(!empty(getGet('tgla', true))){
+                    } elseif(!empty(getGet('tgla', true))){
                         $tgla = getGet('tgla', true);
                         $tglb = getGet('tglb', true);
-                        $sql = "SELECT SUM(qty) as qty, SUM(beli * qty) as beli, SUM(total) as jual, barang.id_kategori 
+                        $sql = "SELECT SUM(qty) as qty, SUM(beli * qty) as beli, SUM(total) as jual 
                                 FROM penjualan_detail 
                                 LEFT JOIN barang ON penjualan_detail.id_barang=barang.id 
                                 WHERE penjualan_detail.tgl_input BETWEEN '$tgla' and '$tglb' $sqkat";
                         $row = $connectdb->prepare($sql);
                         $row->execute();
                         $hasil = $row->fetch(PDO::FETCH_OBJ);
-                    }else{
-                        $sql = "SELECT SUM(qty) as qty, SUM(beli * qty) as beli, SUM(total) as jual, barang.id_kategori 
+                    } else {
+                        $sql = "SELECT SUM(qty) as qty, SUM(beli * qty) as beli, SUM(total) as jual 
                                 FROM penjualan_detail 
                                 LEFT JOIN barang ON penjualan_detail.id_barang=barang.id 
                                 WHERE penjualan_detail.periode = ? $sqkat";
@@ -273,9 +278,10 @@
                         $row->execute(array(date('Y-m')));
                         $hasil = $row->fetch(PDO::FETCH_OBJ);
                     }
-                    $qty = $hasil->qty;
-                    $beli = $hasil->beli;
-                    $jual = $hasil->jual;
+
+                    $qty  = $hasil ? $hasil->qty  : 0;
+                    $beli = $hasil ? $hasil->beli : 0;
+                    $jual = $hasil ? $hasil->jual : 0;
                 ?>
                 <div class="table-responsive-1">
                     <table class="table table-hover table-sm" id="table-artikel-query">

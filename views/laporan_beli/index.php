@@ -1,4 +1,4 @@
-<?php if(!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))){ }else{redirect($baseURL); }?>
+<?php if(!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))){ }else{redirect($baseURL); }?>
 <?php 
     $bulan_tes =array(
         '01'=>"Januari",
@@ -314,7 +314,7 @@ $(document).ready(function() {
             {
                 "data": "id",
                 "render": function(data, type, row, meta) {
-                    <?php if(!empty($_SESSION['codekop_session']['akses'] == 1)){?>
+                    <?php if(!empty($_SESSION['supeno_session']['akses'] == 1)){?>
                     return `<a href="javascript:void(0)" 
                                     class="btn btn-secondary btn-sm EditTransakti" 
                                     data-id="${row.no_trx}" title="Detail">

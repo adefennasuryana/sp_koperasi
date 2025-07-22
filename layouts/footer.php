@@ -3,11 +3,11 @@
 <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-<footer class="main-footer">
+<footer class="main-footer text-center">
     <strong>Copyright &copy;<?=date('Y');?> <a href="#">Supeno</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 2.1
+        <b>Version</b> 1.3
     </div>
 </footer>
 

@@ -2,8 +2,8 @@
 session_start();
 include '../setting.php';
 include '../helper.php';
-if(!empty($_SESSION['codekop_session'])) {
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+if(!empty($_SESSION['supeno_session'])) {
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT * FROM users WHERE id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));
@@ -28,15 +28,15 @@ if(!empty(getPost('keyword', true))) {
         if(getGet('sortir') == 'beli') {
             $cekbarang =  "SELECT * FROM keranjang_beli WHERE id_barang = ? AND id_member = ?";
             $rowq = $connectdb->prepare($cekbarang);
-            $rowq->execute(array($hasil->id, $_SESSION["codekop_session"]["id"]));
+            $rowq->execute(array($hasil->id, $_SESSION["supeno_session"]["id"]));
             $jml = $rowq->rowCount();
             if ($jml > 0) {
                 $sqlw = "UPDATE keranjang_beli SET jumlah= jumlah + ? WHERE id_barang = ? AND id_member = ?";
                 $roww = $connectdb->prepare($sqlw);
-                $roww->execute(array(1,$hasil->id, $_SESSION["codekop_session"]["id"]));
+                $roww->execute(array(1,$hasil->id, $_SESSION["supeno_session"]["id"]));
             } else {
                 $data[] =  $hasil->id;
-                $data[] =  $_SESSION['codekop_session']['id'];
+                $data[] =  $_SESSION['supeno_session']['id'];
                 $data[] =  $hasil->nama_barang;
                 $data[] =  1;
                 $data[] =  $hasil->harga_beli;
@@ -53,15 +53,15 @@ if(!empty(getPost('keyword', true))) {
 
                 $cekbarang =  "SELECT * FROM keranjang WHERE id_barang = ? AND id_member = ?";
                 $rowq = $connectdb->prepare($cekbarang);
-                $rowq->execute(array($hasil->id, $_SESSION["codekop_session"]["id"]));
+                $rowq->execute(array($hasil->id, $_SESSION["supeno_session"]["id"]));
                 $jml = $rowq->rowCount();
                 if ($jml > 0) {
                     $sqlw = "UPDATE keranjang SET jumlah= jumlah + ? WHERE id_barang = ? AND id_member = ?";
                     $roww = $connectdb->prepare($sqlw);
-                    $roww->execute(array(1, $hasil->id, $_SESSION["codekop_session"]["id"]));
+                    $roww->execute(array(1, $hasil->id, $_SESSION["supeno_session"]["id"]));
                 } else {
                     $data[] =  $hasil->id;
-                    $data[] =  $_SESSION['codekop_session']['id'];
+                    $data[] =  $_SESSION['supeno_session']['id'];
                     $data[] =  $hasil->nama_barang;
                     $data[] =  0;
                     $data[] =  1;

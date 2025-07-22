@@ -2,8 +2,8 @@
     session_start();
     include '../../setting.php';
     include '../../helper.php';
-    if(!empty($_SESSION['codekop_session'])) {
-        $uid =  (int)$_SESSION['codekop_session']['id'];
+    if(!empty($_SESSION['supeno_session'])) {
+        $uid =  (int)$_SESSION['supeno_session']['id'];
         $sql_users = "SELECT * FROM users WHERE id = ?";
         $row_users = $connectdb->prepare($sql_users);
         $row_users->execute(array($uid));
@@ -45,7 +45,7 @@
                     <h6 class="text-right pt-1">No Transaksi</h6>
                 </div>
                 <div class="col-sm-6 mb-3">
-                    <input type="text" autocomplete="off" class="form-control" required name="notrx"
+                    <input type="text" autocomplete="off" readonly="readonly" class="form-control" required name="notrx"
                         value="<?= $kode;?>">
                 </div>
                 <div class="col-sm-6 mb-3">
@@ -83,7 +83,7 @@
                     <h6 class="text-right mt-2">Grand Total</h6>
                 </div>
                 <div class="col-sm-6 mb-3">
-                    <input type="text" id="GrandTotal" autocomplete="off" class="form-control" placeholder=""
+                    <input type="text" id="GrandTotal" autocomplete="off" readonly="readonly" class="form-control" placeholder=""
                         name="grandtotal" required value="<?= getRupiah($grantotal);?>">
                 </div>
                 <div class="col-sm-6 mb-3">
@@ -97,7 +97,7 @@
                     <h6 class="text-right mt-2">Kembali</h6>
                 </div>
                 <div class="col-sm-6 mb-3">
-                    <input type="text" value="0" autocomplete="off" class="form-control" id="kembaliJml" name="kembali"
+                    <input type="text" value="0" autocomplete="off" readonly="readonly" class="form-control" id="kembaliJml" name="kembali"
                         value="">
                 </div>
                 <div class="col-sm-6 mb-3">

@@ -1,5 +1,5 @@
 <?php
-    $id =  $_SESSION['codekop_session']['id'];
+    $id =  $_SESSION['supeno_session']['id'];
     $sql = "SELECT * FROM users WHERE id = ?";
     $row = $connectdb->prepare($sql);
     $row->execute(array($id));

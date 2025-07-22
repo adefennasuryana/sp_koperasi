@@ -19,7 +19,7 @@
             }
         ?>
         <div class="btn-group" role="group" aria-label="Basic example">
-            <?php if (!empty($_SESSION['codekop_session']['akses'] == 1)) {?>
+            <?php if (!empty($_SESSION['supeno_session']['akses'] == 1)) {?>
             <a href="tambah.php" class="btn btn-primary btn-md" role="button">
                 <i class="fa fa-plus mr-1"></i>Add Barang</a>
             <a href="import.php" class="btn btn-info btn-md" role="button">
@@ -50,13 +50,13 @@
                                 <th>Nama Barang</th>
                                 <th>Kategori</th>
                                 <th>Merk</th>
-                                <?php if (!empty($_SESSION['codekop_session']['akses'] == 1)) {?>
+                                <?php if (!empty($_SESSION['supeno_session']['akses'] == 1)) {?>
                                 <th>Harga beli</th>
                                 <?php }?>
                                 <th>Harga jual</th>
                                 <th>Satuan</th>
                                 <th>Stok</th>
-                                <?php if (!empty($_SESSION['codekop_session']['akses'] == 1)) {?>
+                                <?php if (!empty($_SESSION['supeno_session']['akses'] == 1)) {?>
                                 <th style="width:8%">Aksi</th>
                                 <?php }?>
                             </tr>
@@ -131,7 +131,7 @@ $(document).ready(function() {
             {
                 "data": "merk"
             },
-            <?php if (!empty(in_array($_SESSION['codekop_session']['akses'], [1]))) {?> {
+            <?php if (!empty(in_array($_SESSION['supeno_session']['akses'], [1]))) {?> {
                 data: 'harga_beli',
                 render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp')
             },
@@ -145,7 +145,7 @@ $(document).ready(function() {
             {
                 "data": "stok"
             },
-            <?php if (!empty(in_array($_SESSION['codekop_session']['akses'], [1]))) {?> {
+            <?php if (!empty(in_array($_SESSION['supeno_session']['akses'], [1]))) {?> {
                 "data": "id",
                 "render": function(data, type, row, meta) {
                     if (row.stok > 5) {

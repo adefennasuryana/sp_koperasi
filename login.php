@@ -24,7 +24,7 @@
             {
                 if($hsl['active'] == '1')
                 {
-                    $_SESSION['codekop_session'] = $hsl;
+                    $_SESSION['supeno_session'] = $hsl;
                     // echo "<script>window.location='index.php';</script>";
                     redirect("index.php");
                 }else{

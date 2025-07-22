@@ -1,5 +1,5 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-success elevation-4">
     <!-- Brand Logo -->
     <a href="<?= $baseURL;?>" class="brand-link">
         <img src="<?= $baseURL.'assets/uploads/toko/'.$toko->logo;?>" alt="AdminLTE Logo"
@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li class="nav-header">Transaksi</li>
-                <?php if(!empty(in_array($_SESSION['codekop_session']['akses'],[1,5]))){?>
+                <?php if(!empty(in_array($_SESSION['supeno_session']['akses'],[1,5]))){?>
                 <li class="nav-item">
                     <a href="<?= $baseURL;?>transaksi/index.php" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <?php }?>
-                <?php if(!empty(in_array($_SESSION['codekop_session']['akses'],[5]))){?>
+                <?php if(!empty(in_array($_SESSION['supeno_session']['akses'],[5]))){?>
                 <li class="nav-item">
                     <a href="<?= $baseURL;?>barang/index.php" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -57,7 +57,7 @@
                     </a>
                 </li>
                 <?php }?>
-                <?php if(!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))){?>
+                <?php if(!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))){?>
                 <li class="nav-item">
                     <a href="<?= $baseURL;?>transaksi_beli/index.php" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
@@ -75,7 +75,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <?php if(!empty(in_array($_SESSION['codekop_session']['akses'], [1]))){?>
+                        <?php if(!empty(in_array($_SESSION['supeno_session']['akses'], [1]))){?>
                         <li class="nav-item">
                             <a href="<?= $baseURL;?>laporan/index.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -110,7 +110,7 @@
                     </ul>
                 </li>
                 <?php }?>
-                <?php if(!empty(in_array($_SESSION['codekop_session']['akses'], [1,6]))){?>
+                <?php if(!empty(in_array($_SESSION['supeno_session']['akses'], [1,6]))){?>
                 <li class="nav-header">Input Data</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -154,7 +154,7 @@
                     </ul>
                 </li>
                 <?php }?>
-                <?php if(!empty($_SESSION['codekop_session']['akses'] == 1)){?>
+                <?php if(!empty($_SESSION['supeno_session']['akses'] == 1)){?>
                 <li class="nav-header">Administrator</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">

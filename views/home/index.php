@@ -103,7 +103,7 @@
     </div>
 </div>
 <br>
-<?php if (!empty($_SESSION['codekop_session']['akses'] == 1)) {?>
+<?php if (!empty($_SESSION['supeno_session']['akses'] == 1)) {?>
 <?php if(!empty($_POST['thn'])){ $thn = $_POST['thn'];  }else{ $thn = date('Y'); }?>
 <div class="row">
     <div class="col-lg-12">

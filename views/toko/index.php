@@ -1,5 +1,5 @@
 <?php 
-    if (!empty($_SESSION['codekop_session']['akses'] != 1)) {
+    if (!empty($_SESSION['supeno_session']['akses'] != 1)) {
         redirect($baseURL);
     }
     $sql = "SELECT * FROM toko WHERE id = 1";
@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Logo</label>
-                        <input type="file" required class="form-control" accept="image/*" name="logo" id="logo"
+                        <input type="file" class="form-control" accept="image/*" name="logo" id="logo"
                             placeholder="" />
                     </div>
                     <input type="hidden" required value="<?= $edit->logo;?>" name="foto" placeholder="" />

@@ -1,5 +1,5 @@
 <?php 
-    if (!empty($_SESSION['codekop_session']['akses'] != 1)) {
+    if (!empty($_SESSION['supeno_session']['akses'] != 1)) {
         redirect($baseURL);
     }
     $id =  (int)$_GET["id"];

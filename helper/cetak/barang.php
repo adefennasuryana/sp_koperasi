@@ -10,8 +10,8 @@ use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-if(!empty($_SESSION['codekop_session'])) {
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+if(!empty($_SESSION['supeno_session'])) {
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT * FROM users WHERE id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));
@@ -23,8 +23,8 @@ if(!empty($_SESSION['codekop_session'])) {
 
 // Create new Spreadsheet object
 $spreadsheet = new Spreadsheet();
-$spreadsheet->getProperties()->setCreator("Codekop - Web - Android")
-    ->setLastModifiedBy("Codekop - Web - Android")
+$spreadsheet->getProperties()->setCreator("supeno - Web - Android")
+    ->setLastModifiedBy("supeno - Web - Android")
     ->setTitle("Office 2007 XLSX Test Document")
     ->setSubject("Office 2007 XLSX Test Document")
     ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")

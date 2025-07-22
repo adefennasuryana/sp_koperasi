@@ -84,7 +84,7 @@
         }
         $datapd[] = date('Y-m-d'); //10
         $datapd[] = date('Y-m'); //11 
-        $datapd[] = $_SESSION['codekop_session']['id']; //12
+        $datapd[] = $_SESSION['supeno_session']['id']; //12
         $datapd[] = date('Y-m-d H:i:s'); //13
         if ($hsl) {
             $datapd[] = $hsl->id; //14

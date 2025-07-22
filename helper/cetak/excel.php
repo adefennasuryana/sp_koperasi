@@ -2,8 +2,8 @@
 session_start();
 include '../../setting.php';
 include '../../helper.php';
-if(!empty($_SESSION['codekop_session'])) {
-    $uid =  (int)$_SESSION['codekop_session']['id'];
+if(!empty($_SESSION['supeno_session'])) {
+    $uid =  (int)$_SESSION['supeno_session']['id'];
     $sql_users = "SELECT * FROM users WHERE id = ?";
     $row_users = $connectdb->prepare($sql_users);
     $row_users->execute(array($uid));
@@ -51,8 +51,7 @@ $bulan_tes =array(
     <meta name="author" content="Fauzan Falah">
 
     <title>Cetak Nota</title>
-    <?php if(!empty(getGet('excel', true))) {
-    } else {?>
+    <?php if(!empty(getGet('excel', true))) {  } else {?>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <link rel="stylesheet" href="assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
         <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
@@ -113,7 +112,8 @@ $bulan_tes =array(
         }
     </style>
 </head>
-<body class="hold-transition sidebar-collapse" style="-webkit-print-color-adjust: exact !important;" onload="window.print()"><div class="wrapper">
+<body class="hold-transition sidebar-collapse" <?php if(!empty(getGet('excel', true))) { echo 'style="border: 0.1pt solid #ccc"'; } else {?> style="-webkit-print-color-adjust: exact !important;" onload="window.print()" <?php }?>>
+    <div class="wrapper">
     <section class="content">
         <div class="container">
             <div id="laporan">
@@ -132,8 +132,8 @@ $bulan_tes =array(
                         <?php } else {?>
                             Data Laporan Penjualan <?= $bulan_tes[date('m')];?> <?= date('Y');?>
                         <?php }?>
-                        <?php if(!empty($_SESSION['codekop_session']['akses']) == 5) {
-                            echo '( Kasir '.$_SESSION['codekop_session']['name'].' )';
+                        <?php if(!empty($_SESSION['supeno_session']['akses']) == 5) {
+                            echo '( Kasir '.$_SESSION['supeno_session']['name'].' )';
                         }?>
                     </h5>
                     <div class="table-responsive">
@@ -142,11 +142,16 @@ $bulan_tes =array(
                                 <tr bgcolor="yellow">
                                     <th>No</th>
                                     <th>No Trx</th>
-                                    <th>Jumlah</th>
-                                    <th>Sub Beli</th>
-                                    <th>Sub Jual</th>
                                     <th>Kasir</th>
-                                    <th>Pelanggan</th>
+                                    <th>Nama Pelanggan</th>
+                                    <th>Jumlah</th>
+                                    <?php if(!empty(in_array($_SESSION['supeno_session']['akses'],[1]))){?>
+                                    <th>Total Modal</th>
+                                    <?php }?>
+                                    <th>Total Jual</th>
+                                    <th>Dibayar</th>
+                                    <th>Kurang</th>
+                                    <th>Status</th>
                                     <th>Created At</th>
                                 </tr>
                             </thead>
@@ -154,8 +159,16 @@ $bulan_tes =array(
                                 <?php
                                     $no =1; 
                                     $sqlWhere = '';
-                                    if (!empty($_SESSION['codekop_session']['akses'] != 1)) {
-                                        $sqlWhere = ' AND penjualan.id_member='.$_SESSION['codekop_session']['id'];
+                                    if (!empty($_SESSION['supeno_session']['akses'] != 1)) {
+                                        $sqlWhere = ' AND penjualan.id_member='.$_SESSION['supeno_session']['id'];
+                                    }
+                                    $id_pelanggan = getGet('id_pelanggan') ?? '';
+                                    if($id_pelanggan) {
+                                        $sqlWhere .= ' AND penjualan.id_pelanggan = "'.$id_pelanggan.'" ';
+                                    }
+                                    $status_bayar = getGet('status_bayar') ?? '';
+                                    if($status_bayar) {
+                                        $sqlWhere .= ' AND penjualan.status_bayar = "'.$status_bayar.'" ';
                                     }
                                     if(!empty(getGet('cari', true))) {
                                         $periode = getGet('thn', true).'-'.getGet('bln', true);
@@ -197,33 +210,39 @@ $bulan_tes =array(
                                     $qty = 0;
                                     $beli = 0;
                                     $total = 0;
+                                    $bayar = 0;
+                                    $kurang = 0;
                                     foreach($hasil as $r) {
                                 ?>
                                 <tr>
                                     <td><?= $no;?></td>
-                                    <td><?=$r->no_trx;?></td>         
+                                    <td><?=$r->no_trx;?></td>      
+                                    <td><?=$r->name;?></td>   
+                                    <td><?=$r->nama_pelanggan ?? '-';?></td>     
                                     <td><?=$r->jumlah;?></td>   
-                                    <?php if (!empty($_SESSION['codekop_session']['akses'] == 1)) {?>   
+                                    <?php if (!empty($_SESSION['supeno_session']['akses'] == 1)) {?>   
                                     <td><?=$r->beli;?></td>    
                                     <?php }?>  
                                     <td><?=$r->total;?></td>  
-                                    <td><?=$r->name;?></td>   
-                                    <td><?=$r->nama_pelanggan ?? '-';?></td>        
+                                    <td><?=$r->bayar;?></td>   
+                                    <td><?=$r->bayar - $r->total;?></td>      
+                                    <td><?=$r->status_bayar;?></td>       
                                     <td><?=$r->created_at;?></td>    
                                 </tr>
-                                <?php $no++; $qty += $r->jumlah; $beli += $r->beli; $total += $r->total; }?>
+                                <?php $no++; $qty += $r->jumlah; $beli += $r->beli; $total += $r->total; $bayar += $r->bayar; $kurang += ($r->bayar - $r->total); }?>
                                 <tr>
-                                    <th colspan="2">Total Terjual</td>
+                                    <th colspan="4">Total Terjual</td>
                                     <th class="text-center"><?= $qty ?? 0;?></td>
-                                    <?php if (!empty($_SESSION['codekop_session']['akses'] == 1)) {?>   
+                                    <?php if (!empty($_SESSION['supeno_session']['akses'] == 1)) {?>   
                                     <th><?= getRupiah($beli ?? 0,'Rp');?></th>
                                     <?php }?>  
                                     <th><?= getRupiah($total ?? 0,'Rp');?></th>
-                                    <?php if (!empty($_SESSION['codekop_session']['akses'] == 1)) {?>   
-                                    <th colspan="2">Keuntungan</th>
+                                    <th><?= getRupiah($bayar ?? 0,'Rp');?></th>
+                                    <th><?= getRupiah($kurang ?? 0,'Rp');?></th>
+                                    <?php if (!empty($_SESSION['supeno_session']['akses'] == 1)) {?>   
+                                    <th>Keuntungan</th>
                                     <th><?= getRupiah(($total-$beli) ?? 0,'Rp');?></th>
                                     <?php }else{?>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <?php }?>

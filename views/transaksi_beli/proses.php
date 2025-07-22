@@ -10,15 +10,15 @@
         
         $cekbarang =  "SELECT * FROM keranjang_beli WHERE id_barang = ? AND id_member = ?";
         $rowq = $connectdb->prepare($cekbarang);
-        $rowq->execute(array($id, $_SESSION["codekop_session"]["id"]));
+        $rowq->execute(array($id, $_SESSION["supeno_session"]["id"]));
         $jml = $rowq->rowCount();
         if ($jml > 0) {
             $sqlw = "UPDATE keranjang_beli SET jumlah= jumlah + ? WHERE id_barang = ? AND id_member = ?";
             $roww = $connectdb->prepare($sqlw);
-            $roww->execute(array((int)$_POST["qty"] ?? 0,$id, $_SESSION["codekop_session"]["id"]));
+            $roww->execute(array((int)$_POST["qty"] ?? 0,$id, $_SESSION["supeno_session"]["id"]));
         } else {
             $data[] =  $id;
-            $data[] =  $_SESSION['codekop_session']['id'];
+            $data[] =  $_SESSION['supeno_session']['id'];
             $data[] =  $edit->nama_barang;
             $data[] =  (int)$_POST["qty"] ?? 0;
             $data[] =  $edit->harga_beli;
@@ -47,7 +47,7 @@
         $rowNota->execute([$notrx]);
         $hasilNota = $rowNota->rowCount();
         if ($hasilNota > 0) {
-            $notrx = $notrx.'-'.date('Hi').'-'.$_SESSION['codekop_session']['id'];
+            $notrx = $notrx.'-'.date('Hi').'-'.$_SESSION['supeno_session']['id'];
         }
 
         $sql = "SELECT barang.id_barang as idb, keranjang_beli.* 
@@ -81,7 +81,7 @@
             $datapd[] = $r->beli * $r->jumlah;
             $datapd[] = date('Y-m-d');
             $datapd[] = date('Y-m');
-            $datapd[] = $_SESSION['codekop_session']['id'];
+            $datapd[] = $_SESSION['supeno_session']['id'];
             $datapd[] = date('Y-m-d H:i:s');
             $sqlpd = "INSERT INTO pembelian_detail(no_trx, id_barang, idb, nama_barang, 
                         beli, qty, total,
@@ -101,7 +101,7 @@
 
         $datap[] = $_POST["supplier"];
         $datap[] = $notrx;
-        $datap[] = $_SESSION['codekop_session']['id'];
+        $datap[] = $_SESSION['supeno_session']['id'];
         $datap[] = $qty;
         $datap[] = $beli;
         $datap[] = date('Y-m-d');
@@ -118,7 +118,7 @@
 
         $sql_delete = "DELETE FROM keranjang_beli WHERE id_member = ?";
         $row_delete = $connectdb->prepare($sql_delete);
-        $row_delete->execute(array($_SESSION['codekop_session']['id']));
+        $row_delete->execute(array($_SESSION['supeno_session']['id']));
 
         set_flashdata("Berhasil", " Transaksi Anda Telah Berhasil !", "success");
         redirect("sukses.php?notrx=".$notrx.'&kembali='.$beli);
@@ -135,15 +135,15 @@
         
         $cekbarang =  "SELECT * FROM keranjang_beli WHERE id_barang = ? AND id_member = ?";
         $rowq = $connectdb->prepare($cekbarang);
-        $rowq->execute(array($id, $_SESSION["codekop_session"]["id"]));
+        $rowq->execute(array($id, $_SESSION["supeno_session"]["id"]));
         $jml = $rowq->rowCount();
         if ($jml > 0) {
             $sqlw = "UPDATE keranjang_beli SET jumlah= jumlah + ? WHERE id_barang = ? AND id_member = ?";
             $roww = $connectdb->prepare($sqlw);
-            $roww->execute(array((int)$_GET["qty"],$id, $_SESSION["codekop_session"]["id"]));
+            $roww->execute(array((int)$_GET["qty"],$id, $_SESSION["supeno_session"]["id"]));
         } else {
             $data[] =  $id;
-            $data[] =  $_SESSION['codekop_session']['id'];
+            $data[] =  $_SESSION['supeno_session']['id'];
             $data[] =  $edit->nama_barang;
             $data[] =  (int)$_GET["qty"];
             $data[] =  $edit->harga_beli;
@@ -189,7 +189,7 @@
     if (!empty(getGet("aksi") == "reset")) {
         $sql_delete = "DELETE FROM keranjang_beli WHERE id_member = ?";
         $row_delete = $connectdb->prepare($sql_delete);
-        $row_delete->execute(array($_SESSION['codekop_session']['id']));
+        $row_delete->execute(array($_SESSION['supeno_session']['id']));
         set_flashdata("Berhasil", "reset keranjang beli telah sukses !", "success");
         redirect("index.php");
     }
