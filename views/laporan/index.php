@@ -492,9 +492,11 @@
                     data: "id",
                     render: function(data, type, row, meta) {
                         return `
+                            <?php if(!empty(in_array($_SESSION['supeno_session']['akses'], [1]))) { ?>
                             <a href="edit.php?id=${row.no_trx}" class="btn btn-success btn-sm" title="Edit">
                                 <i class="fa fa-edit"></i> Edit
                             </a> 
+                            <?php } ?>
                             <a href="javascript:void(0)" class="btn btn-secondary btn-sm EditTransakti" data-id="${row.no_trx}" title="Detail">
                                 <i class="fa fa-list"></i> Detail
                             </a> 
